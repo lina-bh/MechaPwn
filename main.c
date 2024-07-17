@@ -631,6 +631,7 @@ void setRegion(char *isDex)
 	write_region(region_params, (uint8_t *) model, region_ciphertext);
 }
 
+#if 0
 uint8_t *frames[] = {
 	&frame_001, &frame_002, &frame_003, &frame_004, &frame_005, &frame_006, &frame_007, &frame_008,
 	&frame_009, &frame_010, &frame_011, &frame_012, &frame_013, &frame_014, &frame_015, &frame_016,
@@ -641,12 +642,13 @@ uint8_t *frames[] = {
 	&frame_049, &frame_050, &frame_051, &frame_052, &frame_053, &frame_054, &frame_055, &frame_056,
 	&frame_057, &frame_058, &frame_059, &frame_060, &frame_061, &frame_062
 };
+#endif
 
 void drawLogoFrame(uint8_t frame, char *text2)
 {
 	gsKit_clear(gsGlobal, Black);
 	
-	struct GSTEXTURE_holder *logoTextures = drawImage((gsGlobal->Width - 480) / 2, (gsGlobal->Height - 270) / 2, 480, 270, frames[frame]);
+	/* struct GSTEXTURE_holder *logoTextures = drawImage((gsGlobal->Width - 480) / 2, (gsGlobal->Height - 270) / 2, 480, 270, frames[frame]); */
 
 	char text[] = "MechaPwn";			
 	int x, y;
@@ -663,18 +665,25 @@ void drawLogoFrame(uint8_t frame, char *text2)
 	
 	freeGSTEXTURE_holder(text2Textures);
 	freeGSTEXTURE_holder(textTextures);
-	freeGSTEXTURE_holder(logoTextures);
+	/* freeGSTEXTURE_holder(logoTextures); */
 }
 
 void drawLogo()
 {
 	uint8_t frame = 0;
-	while(!MassCheck())
+	uint32_t new_pad;
+	while(1)
 	{
-		drawLogoFrame(frame++, "Waiting for USB drive...");
+		drawLogoFrame(frame++, "Press X to call MassCheck");
 	
 		if (frame >= 62)
 			frame = 0;
+
+		new_pad = ReadCombinedPadStatus();
+
+		if (new_pad & PAD_CROSS && MassCheck()) {
+			break;
+		}
 	}
 	
 	while (1)
@@ -860,6 +869,7 @@ char applyPatches(char isDex)
 
 uint8_t *getPowerTexture()
 {
+        #if 0
 	char model_number[18];
 	for (int i = 0; i < 18; i += 2)
 		if (!ReadNVM(216 + i / 2, (uint16_t *) &model_number[i]))
@@ -878,6 +888,9 @@ uint8_t *getPowerTexture()
 		return  &pwr70k;
 	
 	return &pwr50k;
+        #endif
+
+        return NULL;
 }
 
 void checkUnsupportedVersion()
@@ -1068,7 +1081,7 @@ int main()
 
 	gsKit_clear(gsGlobal, Black);
 
-	struct GSTEXTURE_holder *imageTextures = drawImage((gsGlobal->Width - 400) / 2, (gsGlobal->Height - (225 + 60)) / 2, 400, 225, powerTexture);
+	/* struct GSTEXTURE_holder *imageTextures = drawImage((gsGlobal->Width - 400) / 2, (gsGlobal->Height - (225 + 60)) / 2, 400, 225, powerTexture); */
 		
 	const char *text = "Unplug the power cord.";
 	int x, y;
@@ -1090,7 +1103,7 @@ int main()
 	if (rerunTextures)
 		freeGSTEXTURE_holder(rerunTextures);
 	freeGSTEXTURE_holder(unplugTextures);
-	freeGSTEXTURE_holder(imageTextures);
+	/* freeGSTEXTURE_holder(imageTextures); */
 	
 	
 	// ---
