@@ -521,7 +521,7 @@ void drawLogoFrame(uint8_t frame, char *text2)
 {
     gsKit_clear(gsGlobal, Black);
 
-    struct GSTEXTURE_holder *logoTextures = drawImage((gsGlobal->Width - 480) / 2, (gsGlobal->Height - 270) / 2, 480, 270, frames[frame]);
+    /* struct GSTEXTURE_holder *logoTextures = drawImage((gsGlobal->Width - 480) / 2, (gsGlobal->Height - 270) / 2, 480, 270, frames[frame]); */
 
     char text[]                           = "MechaPwn";
     int x, y;
@@ -538,7 +538,7 @@ void drawLogoFrame(uint8_t frame, char *text2)
 
     freeGSTEXTURE_holder(text2Textures);
     freeGSTEXTURE_holder(textTextures);
-    freeGSTEXTURE_holder(logoTextures);
+    /* freeGSTEXTURE_holder(logoTextures); */
 }
 
 void drawLogo()
