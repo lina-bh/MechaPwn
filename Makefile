@@ -9,10 +9,10 @@ EE_OBJS += MECHAPROXY_irx.o MASSWATCHER_irx.o pwr50k.o pwr70k.o pwr90k.o pwrpsx1
 
 EE_INCS = -I$(PS2SDK)/ports/include -I$(PS2SDK)/sbv/include -I$(PS2SDK)/common/include -I./irx/source/mechaproxy/include/ -I./irx/source/masswatcher/include/ -I$(PS2SDK)/ports/include/freetype2 -I$(GSKIT)/include
 EE_LDFLAGS = -L$(PS2SDK)/sbv/lib -L$(PS2SDK)/ports/lib -L$(GSKIT)/lib
-EE_LIBS = -lpatches -lpadx -lmc -lfreetype -lpng16 -lz -lgskit -lgskit_toolkit -ldmakit -lfileXio
+EE_LIBS = -lpatches -lpadx -lmc -lfreetype -lpng -lz -lgskit -lgskit_toolkit -ldmakit -lfileXio
 EE_CFLAGS = -std=c99
 
-BIN2S = $(PS2SDK)/bin/bin2s
+BIN2S = $(PS2SDK)/bin/bin2c
 
 all: $(EE_BIN)
 	ps2-packer $(EE_BIN) $(EE_PACKED_BIN)
@@ -23,32 +23,32 @@ clean:
 	rm -f *.elf *.o *.s resources/*.bin resources/*.pyc *.pyc
 
 #IRX Modules
-iomanX.s:
-	$(BIN2S) $(PS2SDK)/iop/irx/iomanX.irx iomanX.s iomanX
-fileXio.s:
-	$(BIN2S) $(PS2SDK)/iop/irx/fileXio.irx fileXio.s fileXio
-freesio2.s:
-	$(BIN2S) $(PS2SDK)/iop/irx/freesio2.irx freesio2.s freesio2
-freepad.s:
-	$(BIN2S) $(PS2SDK)/iop/irx/freepad.irx freepad.s freepad
-mcman.s:
-	$(BIN2S) $(PS2SDK)/iop/irx/mcman.irx mcman.s mcman
-mcsrv.s:
-	$(BIN2S) $(PS2SDK)/iop/irx/mcserv.irx mcsrv.s mcserv
-USBD.s: $(PS2SDK)/iop/irx/usbd.irx
-	$(BIN2S) $(PS2SDK)/iop/irx/usbd.irx USBD.s USBD
-USBHDFSD.s: $(PS2SDK)/iop/irx/usbhdfsd.irx
-	$(BIN2S) $(PS2SDK)/iop/irx/usbhdfsd.irx USBHDFSD.s USBHDFSD
-MECHAPROXY_irx.s:
+iomanX.c:
+	$(BIN2S) $(PS2SDK)/iop/irx/iomanX.irx iomanX.c iomanX
+fileXio.c:
+	$(BIN2S) $(PS2SDK)/iop/irx/fileXio.irx fileXio.c fileXio
+freesio2.c:
+	$(BIN2S) $(PS2SDK)/iop/irx/freesio2.irx freesio2.c freesio2
+freepad.c:
+	$(BIN2S) $(PS2SDK)/iop/irx/freepad.irx freepad.c freepad
+mcman.c:
+	$(BIN2S) $(PS2SDK)/iop/irx/mcman.irx mcman.c mcman
+mcsrv.c:
+	$(BIN2S) $(PS2SDK)/iop/irx/mcserv.irx mcsrv.c mcserv
+USBD.c: $(PS2SDK)/iop/irx/usbd.irx
+	$(BIN2S) $(PS2SDK)/iop/irx/usbd.irx USBD.c USBD
+USBHDFSD.c: $(PS2SDK)/iop/irx/usbhdfsd.irx
+	$(BIN2S) $(PS2SDK)/iop/irx/usbhdfsd.irx USBHDFSD.c USBHDFSD
+MECHAPROXY_irx.c:
 	$(MAKE) -C irx/source/mechaproxy
-	$(BIN2S) irx/source/mechaproxy/irx/mechaproxy.irx MECHAPROXY_irx.s MECHAPROXY_irx
-MASSWATCHER_irx.s:
+	$(BIN2S) irx/source/mechaproxy/irx/mechaproxy.irx MECHAPROXY_irx.c MECHAPROXY_irx
+MASSWATCHER_irx.c:
 	$(MAKE) -C irx/source/masswatcher
-	$(BIN2S) irx/source/masswatcher/irx/masswatcher.irx MASSWATCHER_irx.s MASSWATCHER_irx
-IndieFlower.s: resources/IndieFlower-Regular.ttf
-	$(BIN2S) resources/IndieFlower-Regular.ttf IndieFlower.s IndieFlower
+	$(BIN2S) irx/source/masswatcher/irx/masswatcher.irx MASSWATCHER_irx.c MASSWATCHER_irx
+IndieFlower.c: resources/IndieFlower-Regular.ttf
+	$(BIN2S) resources/IndieFlower-Regular.ttf IndieFlower.c IndieFlower
 
-%.s: resources/%
+%.c: resources/%
 	$(BIN2S) $^ $@ $(^F)
 
 resources/%: resources/%.png
